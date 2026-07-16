@@ -1,0 +1,1039 @@
+import React, { useState, useMemo, useEffect } from 'react';
+import { 
+  Zap, Plus, Trash2, Edit2, Download, Upload, Printer, Search, 
+  Info, Layers, Home, Cpu, AlertTriangle, Check, RotateCcw, 
+  FileText, MapPin, Eye, Compass, ToggleLeft, Settings, Database
+} from 'lucide-react';
+
+// ==================================================
+// INITIAL DIGITAL TWIN PANEL DATA (UPDATED SCHEME)
+// ==================================================
+const INITIAL_CIRCUITS = [
+  // --- LEFT COLUMN (EVEN SPACES - MAPPED TO 101-115) ---
+  { id: 'L30', num: '30', side: 'left', label: 'Breaker-101', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L28', num: '28', side: 'left', label: 'Breaker-102', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L26', num: '26', side: 'left', label: 'Breaker-103', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L24', num: '24', side: 'left', label: 'Breaker-104', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L22', num: '22', side: 'left', label: 'Breaker-105', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L20', num: '20', side: 'left', label: 'Breaker-106', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L18', num: '18', side: 'left', label: 'Breaker-107', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L16', num: '16', side: 'left', label: 'Breaker-108', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L14', num: '14', side: 'left', label: 'Breaker-109', type: 'Blank', amps: 0, notes: 'Blank cover' },
+  { id: 'L12', num: '12', side: 'left', label: 'Breaker-110', type: 'AFCI', amps: 15, notes: 'Front South Bedroom & Fire Sprinkler Alarm System' },
+  { id: 'L10', num: '10', side: 'left', label: 'Breaker-111', type: 'AFCI', amps: 15, notes: 'Home Office desk receptacles, lights & network closet' },
+  { id: 'L8',  num: '8',  side: 'left', label: 'Breaker-112', type: 'AFCI', amps: 15, notes: 'Guest Bedroom wall outlets and overhead ceiling fans' },
+  { id: 'L6',  num: '6',  side: 'left', label: 'Breaker-113', type: 'AFCI', amps: 15, notes: 'Main/Mom\'s Bathroom vanity GFCI and shower lighting' },
+  { id: 'L4',  num: '4',  side: 'left', label: 'Breaker-114', type: 'AFCI', amps: 15, notes: 'Master Bedroom main outlets, bedside lamps & walk-in closet' },
+  { id: 'L2',  num: '2',  side: 'left', label: 'Breaker-115', type: 'AFCI', amps: 15, notes: 'Living Room entertainment center, accent lights & wall plugs' },
+
+  // --- RIGHT COLUMN (ODD SPACES - MAPPED TO 201-214) ---
+  { id: 'R29-27', num: '29/27', side: 'right', label: 'Breaker-201/202', type: 'Double-Pole-Solar', amps: 20, notes: 'Solar Inverter Feed. WARNING: Do not relocate this overcurrent device!' },
+  { id: 'R25', num: '25', side: 'right', label: 'Breaker-203', type: 'Blank', amps: 0, notes: 'Spare slot' },
+  { id: 'R23-21', num: '23/21', side: 'right', label: 'Breaker-204/205', type: 'Double-Pole', amps: 20, notes: 'Electric Water Heater unit' },
+  { id: 'R19', num: '19', side: 'right', label: 'Breaker-206', type: 'Standard', amps: 20, notes: 'Exterior Irrigation Sprinkler Controller' },
+  { id: 'R17', num: '17', side: 'right', label: 'Breaker-207', type: 'Standard', amps: 20, notes: 'Kitchen stove ventilation hood fan & task lighting' },
+  { id: 'R15', num: '15', side: 'right', label: 'Breaker-208', type: 'Standard', amps: 20, notes: 'Dedicated Refrigerator outlet in kitchen kitchen bay' },
+  { id: 'R13', num: '13', side: 'right', label: 'Breaker-209', type: 'Standard', amps: 20, notes: 'Dryer unit power (120V ignition/motor or gas setup)' },
+  { id: 'R11', num: '11', side: 'right', label: 'Breaker-210', type: 'Standard', amps: 20, notes: 'Dedicated Laundry Washing Machine wall outlet' },
+  { id: 'R9',  num: '9',  side: 'right', label: 'Breaker-211', type: 'Standard', amps: 20, notes: 'Kitchen countertop small appliance receptacles (Circuit A)' },
+  { id: 'R7',  num: '7',  side: 'right', label: 'Breaker-212', type: 'Standard', amps: 20, notes: 'Kitchen countertop small appliance receptacles (Circuit B)' },
+  { id: 'R5',  num: '5',  side: 'right', label: 'Breaker-213', type: 'Standard', amps: 20, notes: 'Dining Room receptacles & kitchen/dining island' },
+  { id: 'R3-1', num: '3/1', side: 'right', label: 'Breaker-213/214', type: 'Double-Pole', amps: 25, notes: 'Central Air Conditioning condenser / compressor unit' },
+];
+
+const INITIAL_RECEPTACLES = [
+  { id: 'rec-1', circuitId: 'L10', name: 'Main Desk Double Outlet', type: 'Outlet 🔌', room: 'Office', notes: 'Powers PC, monitors, and standing desk.' },
+  { id: 'rec-2', circuitId: 'L10', name: 'Network Cabinet Outlet', type: 'Outlet 🔌', room: 'Office', notes: 'Powers router, fiber modem, and smart hub.' },
+  { id: 'rec-3', circuitId: 'L15', name: 'Main Refrigerator Plug', type: 'Appliance 🍳', room: 'Kitchen', notes: 'Dedicated single receptacle behind the fridge.' },
+  { id: 'rec-4', circuitId: 'L12', name: 'Fire Sprinkler Flow Monitor', type: 'Other ⚙️', room: 'Garage/Utility', notes: 'Hardwired alarm monitoring panel.' },
+  { id: 'rec-5', circuitId: 'L2',  name: 'TV Entertainment Center Plugs', type: 'Outlet 🔌', room: 'Living Room', notes: 'TV, Soundbar, and Game Console.' },
+  { id: 'rec-6', circuitId: 'L6',  name: 'GFCI Vanity Outlet', type: 'GFCI Outlet 🛡️', room: 'Mom\'s Bath', notes: 'Hairdryer and shaver outlet near sink.' },
+  { id: 'rec-7', circuitId: 'R19', name: 'Irrigation Controller Box', type: 'Appliance 🍳', room: 'Exterior', notes: 'Wall mounted sprinkler timer.' },
+  { id: 'rec-8', circuitId: 'L4',  name: 'Master Bed Left Wall Socket', type: 'Outlet 🔌', room: 'Master Bed', notes: 'Bedside phone chargers & lamp.' },
+];
+
+const ROOM_OPTIONS = [
+  'Office', 'Kitchen', 'Living Room', 'Master Bed', 'Guest Bed', 
+  'Front Bed', 'Mom\'s Bath', 'Dining Room', 'Garage', 'Laundry Room', 'Exterior'
+];
+
+const DEVICE_TYPES = [
+  'Outlet 🔌', 'GFCI Outlet 🛡️', 'Light 💡', 'Switch 🎛️', 'Appliance 🍳', 'Solar Inverter ☀️', 'Other ⚙️'
+];
+
+export default function App() {
+  const [circuits, setCircuits] = useState(INITIAL_CIRCUITS);
+  const [receptacles, setReceptacles] = useState(INITIAL_RECEPTACLES);
+  const [selectedCircuitId, setSelectedCircuitId] = useState('L10'); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('directory'); 
+  
+  const [showRecModal, setShowRecModal] = useState(false);
+  const [editingRec, setEditingRec] = useState(null);
+  const [newRecData, setNewRecData] = useState({
+    name: '',
+    type: 'Outlet 🔌',
+    room: 'Office',
+    notes: ''
+  });
+
+  const [showCircuitModal, setShowCircuitModal] = useState(false);
+  const [editingCircuit, setEditingCircuit] = useState(null);
+
+  const [floorPlanNodes, setFloorPlanNodes] = useState([
+    { id: 'rec-1', x: 25, y: 35 },
+    { id: 'rec-2', x: 28, y: 48 },
+    { id: 'rec-3', x: 75, y: 25 },
+    { id: 'rec-5', x: 50, y: 70 },
+    { id: 'rec-6', x: 80, y: 75 },
+    { id: 'rec-8', x: 20, y: 80 },
+  ]);
+
+  const [toastMessage, setToastMessage] = useState(null);
+  const triggerToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const selectedCircuit = useMemo(() => {
+    return circuits.find(c => c.id === selectedCircuitId);
+  }, [selectedCircuitId, circuits]);
+
+  const activeReceptacles = useMemo(() => {
+    return receptacles.filter(r => r.circuitId === selectedCircuitId);
+  }, [receptacles, selectedCircuitId]);
+
+  const filteredCircuits = useMemo(() => {
+    if (!searchQuery.trim()) return circuits;
+    const q = searchQuery.toLowerCase();
+    return circuits.filter(c => {
+      const labelMatch = c.label.toLowerCase().includes(q);
+      const idMatch = c.id.toLowerCase().includes(q);
+      const notesMatch = c.notes?.toLowerCase().includes(q);
+      const numMatch = c.num.includes(q);
+      const recsMatch = receptacles.some(r => r.circuitId === c.id && (
+        r.name.toLowerCase().includes(q) || 
+        r.room.toLowerCase().includes(q) || 
+        r.notes.toLowerCase().includes(q)
+      ));
+      return labelMatch || idMatch || notesMatch || numMatch || recsMatch;
+    });
+  }, [circuits, receptacles, searchQuery]);
+
+  const handleSaveCircuit = (e) => {
+    e.preventDefault();
+    setCircuits(prev => prev.map(c => c.id === editingCircuit.id ? editingCircuit : c));
+    setShowCircuitModal(false);
+    triggerToast(`Updated ${editingCircuit.label}`);
+  };
+
+  const openAddReceptacle = () => {
+    setEditingRec(null);
+    setNewRecData({
+      name: '',
+      type: 'Outlet 🔌',
+      room: 'Office',
+      notes: ''
+    });
+    setShowRecModal(true);
+  };
+
+  const openEditReceptacle = (rec) => {
+    setEditingRec(rec);
+    setNewRecData({
+      name: rec.name,
+      type: rec.type,
+      room: rec.room,
+      notes: rec.notes
+    });
+    setShowRecModal(true);
+  };
+
+  const handleSaveReceptacle = (e) => {
+    e.preventDefault();
+    if (!newRecData.name.trim()) return;
+
+    if (editingRec) {
+      setReceptacles(prev => prev.map(r => r.id === editingRec.id ? { ...r, ...newRecData } : r));
+      triggerToast('Receptacle mapping updated');
+    } else {
+      const newId = `rec-${Date.now()}`;
+      const newRec = {
+        id: newId,
+        circuitId: selectedCircuitId,
+        ...newRecData
+      };
+      setReceptacles(prev => [...prev, newRec]);
+      setFloorPlanNodes(prev => [...prev, { id: newId, x: Math.floor(Math.random() * 60) + 20, y: Math.floor(Math.random() * 60) + 20 }]);
+      triggerToast('New receptacle mapped successfully!');
+    }
+    setShowRecModal(false);
+  };
+
+  const handleDeleteReceptacle = (id) => {
+    setReceptacles(prev => prev.filter(r => r.id !== id));
+    setFloorPlanNodes(prev => prev.filter(n => n.id !== id));
+    triggerToast('Receptacle unmapped.');
+  };
+
+  const handleExportJSON = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ circuits, receptacles, floorPlanNodes }, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `circuit_panel_directory_export.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    triggerToast('Exported project data successfully!');
+  };
+
+  const handleImportJSON = (e) => {
+    const fileReader = new FileReader();
+    if (e.target.files && e.target.files[0]) {
+      fileReader.readAsText(e.target.files[0], "UTF-8");
+      fileReader.onload = (event) => {
+        try {
+          const parsed = JSON.parse(event.target.result);
+          if (parsed.circuits && parsed.receptacles) {
+            setCircuits(parsed.circuits);
+            setReceptacles(parsed.receptacles);
+            if (parsed.floorPlanNodes) setFloorPlanNodes(parsed.floorPlanNodes);
+            triggerToast('Successfully restored backup database!');
+          } else {
+            triggerToast('Error: Invalid backup file format');
+          }
+        } catch (err) {
+          triggerToast('Error reading backup file');
+        }
+      };
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-cyan-500 selection:text-slate-900 flex flex-col">
+      {/* Toast Alert Banner */}
+      {toastMessage && (
+        <div className="fixed top-4 right-4 z-50 bg-cyan-500 text-slate-950 font-bold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 border border-cyan-300 animate-bounce">
+          <Check size={18} className="stroke-[3]" />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      {/* Top Professional Header Bar */}
+      <header className="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 px-4 py-3">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-gradient-to-tr from-amber-500 to-yellow-400 rounded-xl shadow-lg shadow-amber-500/20 text-slate-950">
+              <Zap className="fill-current stroke-[2]" size={24} />
+            </div>
+            <div>
+              <h1 className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                Circuit Mapping & Receptacle Directory
+              </h1>
+              <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 text-xs text-slate-400">
+                <span>Digital twin of physical residential panel system</span>
+                <span className="hidden md:inline text-slate-600">•</span>
+                <span className="text-amber-400 font-semibold flex items-center gap-1">
+                  <MapPin size={12} className="inline stroke-[2.5]" /> 1937 Bristol Ct. Linda, CA 95901
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Search Bar */}
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-2.5 text-slate-400" size={16} />
+            <input 
+              type="text" 
+              placeholder="Search outlets, rooms, or breakers..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 text-sm bg-slate-900/60 border border-slate-800 rounded-xl focus:outline-none focus:border-cyan-500 text-white placeholder-slate-500 transition-colors"
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-2.5 text-xs text-slate-500 hover:text-white"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={handleExportJSON}
+              className="p-2 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-lg hover:text-white transition-all border border-slate-700"
+              title="Export Project Backup File"
+            >
+              <Download size={18} />
+            </button>
+            <label 
+              className="p-2 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-lg hover:text-white transition-all border border-slate-700 cursor-pointer"
+              title="Upload / Restore Backup File"
+            >
+              <Upload size={18} />
+              <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />
+            </label>
+            <button 
+              onClick={() => setActiveTab(activeTab === 'print' ? 'directory' : 'print')}
+              className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all ${
+                activeTab === 'print' 
+                  ? 'bg-amber-500 text-slate-950 border-amber-400' 
+                  : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:text-white'
+              }`}
+            >
+              <Printer size={14} />
+              <span>Print Panel Door Card</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Mode Selector Tabs */}
+      <div className="max-w-7xl mx-auto w-full px-4 mt-6">
+        <div className="flex border-b border-slate-800 gap-1">
+          <button 
+            onClick={() => setActiveTab('directory')}
+            className={`flex items-center gap-2 px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
+              activeTab === 'directory' 
+                ? 'border-cyan-500 text-cyan-400 bg-slate-900/40' 
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Layers size={16} />
+            <span>Panel Twin & Directory</span>
+          </button>
+          <button 
+            onClick={() => setActiveTab('floorplan')}
+            className={`flex items-center gap-2 px-5 py-3 text-sm font-semibold border-b-2 transition-all ${
+              activeTab === 'floorplan' 
+                ? 'border-cyan-500 text-cyan-400 bg-slate-900/40' 
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Compass size={16} />
+            <span>Interactive Space Mapper</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Primary Layout Area */}
+      <main className="flex-1 max-w-7xl mx-auto w-full p-4 lg:p-6">
+        {activeTab === 'directory' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* COLUMN 1: INTERACTIVE PANEL TWIN COMPONENT (4 cols) */}
+            <div className="lg:col-span-5 bg-slate-950/40 border border-slate-800 rounded-3xl p-5 shadow-inner backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                <div>
+                  <h2 className="font-bold text-base flex items-center gap-2">
+                    <Database size={16} className="text-cyan-400" />
+                    <span>Interactive Panel Mockup</span>
+                  </h2>
+                  <p className="text-xs text-slate-400">Click breakers to map electrical receptacles</p>
+                </div>
+                <span className="text-[10px] uppercase bg-slate-800 px-2 py-1 rounded font-bold text-slate-300">
+                  200A SERVICE
+                </span>
+              </div>
+
+              {/* Physical Panel Graphics Outer Frame */}
+              <div className="bg-gradient-to-b from-slate-800 to-slate-900 rounded-2xl p-4 border border-slate-700 shadow-2xl relative">
+                <div className="bg-slate-950/80 rounded-lg p-2 mb-4 text-center border border-slate-800">
+                  <div className="text-[10px] text-amber-500 font-extrabold uppercase tracking-widest flex justify-center items-center gap-1.5">
+                    <AlertTriangle size={11} /> WARNING: PHOTOVOLTAIC SOLAR CONNECTED
+                  </div>
+                </div>
+
+                {/* Left/Right Grid Layout containing Breakers */}
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 bg-slate-950 rounded-xl p-3 relative">
+                  
+                  {/* LEFT BREAKER SLOTS (EVEN SPACES) */}
+                  <div className="flex flex-col gap-1 pr-1 border-r border-slate-800/60">
+                    <div className="text-center text-[10px] font-bold text-slate-500 mb-1 tracking-widest uppercase">
+                      Left Side (A)
+                    </div>
+                    {circuits.filter(c => c.side === 'left').map(circuit => {
+                      const isSelected = selectedCircuitId === circuit.id;
+                      const hasMapped = receptacles.some(r => r.circuitId === circuit.id);
+                      return (
+                        <div 
+                          key={circuit.id}
+                          onClick={() => setSelectedCircuitId(circuit.id)}
+                          className={`group cursor-pointer rounded-lg p-1.5 transition-all duration-150 flex items-center justify-between relative ${
+                            isSelected 
+                              ? 'bg-cyan-500/10 border-2 border-cyan-400 ring-2 ring-cyan-400/20' 
+                              : 'bg-slate-900 border border-slate-800 hover:bg-slate-800/80'
+                          }`}
+                        >
+                          {/* Breaker Info Display */}
+                          <div className="flex-1 min-w-0 pr-1">
+                            <div className="flex items-center gap-1">
+                              <span className="text-[9px] font-extrabold text-slate-500 bg-slate-950 px-1 py-0.5 rounded">
+                                {circuit.num}
+                              </span>
+                              <span className={`text-[10px] font-extrabold truncate ${
+                                circuit.type === 'Blank' ? 'text-slate-600' : 'text-slate-200'
+                              }`}>
+                                {circuit.label}
+                              </span>
+                            </div>
+                            {circuit.type !== 'Blank' && (
+                              <div className="flex items-center gap-1 mt-0.5">
+                                <span className="text-[9px] text-amber-400 font-medium">
+                                  {circuit.amps}A
+                                </span>
+                                <span className="text-[8px] bg-slate-800 px-1 rounded text-slate-400 uppercase font-mono">
+                                  {circuit.type}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Physical Visual Switch Handle Representation */}
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            {circuit.type === 'AFCI' && (
+                              <div className="w-2 h-2 rounded-full bg-yellow-400 border border-slate-950 flex shrink-0 items-center justify-center animate-pulse" title="AFCI Self-Test Switch" />
+                            )}
+                            
+                            {circuit.type !== 'Blank' ? (
+                              <div className="w-8 h-4 bg-slate-950 rounded-sm relative border border-slate-700 flex items-center justify-start px-0.5">
+                                <div className="w-4.5 h-3 bg-slate-800 rounded-sm shadow border-t border-slate-600 border-b border-slate-900 ml-auto flex items-center justify-center text-[7px] text-slate-400 font-bold">
+                                  ON
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-8 h-4 bg-slate-900 border border-dashed border-slate-800 rounded-sm flex items-center justify-center text-[7px] text-slate-700">
+                                MT
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Receptacle count badge */}
+                          {hasMapped && (
+                            <span className="absolute -top-1 -right-1 bg-cyan-500 text-slate-950 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                              {receptacles.filter(r => r.circuitId === circuit.id).length}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* RIGHT BREAKER SLOTS (ODD SPACES) */}
+                  <div className="flex flex-col gap-1 pl-1">
+                    <div className="text-center text-[10px] font-bold text-slate-500 mb-1 tracking-widest uppercase">
+                      Right Side (B)
+                    </div>
+                    {circuits.filter(c => c.side === 'right').map(circuit => {
+                      const isSelected = selectedCircuitId === circuit.id;
+                      const hasMapped = receptacles.some(r => r.circuitId === circuit.id);
+                      const isSolar = circuit.type === 'Double-Pole-Solar';
+
+                      return (
+                        <div 
+                          key={circuit.id}
+                          onClick={() => setSelectedCircuitId(circuit.id)}
+                          className={`group cursor-pointer rounded-lg p-1.5 transition-all duration-150 flex items-center justify-between relative ${
+                            isSelected 
+                              ? 'bg-cyan-500/10 border-2 border-cyan-400 ring-2 ring-cyan-400/20' 
+                              : isSolar 
+                                ? 'bg-red-950/40 border border-red-900 hover:bg-red-900/20'
+                                : 'bg-slate-900 border border-slate-800 hover:bg-slate-800/80'
+                          }`}
+                        >
+                          {/* Physical Switch Handle */}
+                          <div className="flex items-center gap-1.5 shrink-0 pr-1">
+                            {circuit.type !== 'Blank' ? (
+                              <div className="w-8 h-4 bg-slate-950 rounded-sm relative border border-slate-700 flex items-center justify-start px-0.5">
+                                <div className="w-4.5 h-3 bg-slate-800 rounded-sm shadow border-t border-slate-600 border-b border-slate-900 flex items-center justify-center text-[7px] text-slate-400 font-bold">
+                                  ON
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-8 h-4 bg-slate-900 border border-dashed border-slate-800 rounded-sm flex items-center justify-center text-[7px] text-slate-700">
+                                MT
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Breaker Info */}
+                          <div className="flex-1 min-w-0 pl-1 text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <span className={`text-[10px] font-extrabold truncate ${
+                                isSolar ? 'text-red-400' : circuit.type === 'Blank' ? 'text-slate-600' : 'text-slate-200'
+                              }`}>
+                                {circuit.label}
+                              </span>
+                              <span className="text-[9px] font-extrabold text-slate-500 bg-slate-950 px-1 py-0.5 rounded">
+                                {circuit.num}
+                              </span>
+                            </div>
+                            {circuit.type !== 'Blank' && (
+                              <div className="flex items-center justify-end gap-1 mt-0.5">
+                                <span className={`text-[8px] px-1 rounded uppercase font-mono ${
+                                  isSolar ? 'bg-red-900/60 text-red-300' : 'bg-slate-800 text-slate-400'
+                                }`}>
+                                  {circuit.type === 'Double-Pole-Solar' ? 'PV FEED' : circuit.type}
+                                </span>
+                                <span className="text-[9px] text-amber-400 font-medium">
+                                  {circuit.amps}A
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Receptacle count badge */}
+                          {hasMapped && (
+                            <span className="absolute -top-1 -left-1 bg-cyan-500 text-slate-950 text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                              {receptacles.filter(r => r.circuitId === circuit.id).length}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                </div>
+
+                {/* Main Breaker Space at Bottom */}
+                <div className="mt-4 pt-3 border-t-2 border-dashed border-slate-700 flex flex-col items-center">
+                  <div className="w-full max-w-sm bg-slate-950 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">Main Disconnect</span>
+                      <span className="text-xs text-slate-500 font-medium">240V Service / Panel Outer Switch</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl font-black text-amber-500">200A</span>
+                      <div className="w-14 h-8 bg-slate-900 border-2 border-slate-700 rounded-lg flex items-center px-1 relative">
+                        <div className="w-6 h-6 bg-slate-700 text-slate-100 rounded text-[9px] font-extrabold flex items-center justify-center ml-auto shadow border-t border-slate-500">
+                          ON
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* COLUMN 2: SELECTED BREAKER MAPPINGS & DETAILS CARD (7 cols) */}
+            <div className="lg:col-span-7 flex flex-col gap-6">
+              
+              {/* Circuit Header Detail Box */}
+              <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden">
+                <div className="absolute right-0 top-0 h-32 w-32 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none" />
+                
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="px-2.5 py-1 bg-slate-800 text-cyan-400 text-xs font-mono font-black rounded-lg">
+                        BREAKER {selectedCircuit?.num}
+                      </span>
+                      <span className={`text-[10px] px-2 py-0.5 rounded font-black uppercase ${
+                        selectedCircuit?.type === 'AFCI' 
+                          ? 'bg-yellow-950 border border-yellow-800 text-yellow-400' 
+                          : selectedCircuit?.type === 'Double-Pole-Solar'
+                            ? 'bg-red-950 border border-red-900 text-red-400'
+                            : 'bg-slate-800 text-slate-300'
+                      }`}>
+                        {selectedCircuit?.type} Protection
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-black text-white flex items-center gap-2">
+                      {selectedCircuit?.label}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button 
+                      onClick={() => {
+                        setEditingCircuit({ ...selectedCircuit });
+                        setShowCircuitModal(true);
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 rounded-lg hover:text-white transition-all"
+                    >
+                      <Edit2 size={13} />
+                      <span>Edit Label / Info</span>
+                    </button>
+                    {selectedCircuit?.type !== 'Blank' && (
+                      <span className="text-3xl font-black text-amber-500 px-4 py-1.5 bg-slate-950 border border-slate-800 rounded-xl flex items-center gap-1.5">
+                        {selectedCircuit?.amps}
+                        <span className="text-xs text-slate-400 font-bold uppercase tracking-widest">Amps</span>
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-slate-950/60 rounded-xl p-3 border border-slate-800">
+                  <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block mb-1">Functional Coverage Notes</span>
+                  <p className="text-xs text-slate-300 italic">{selectedCircuit?.notes || 'No description provided for this breaker. Tap Edit Label to write descriptive documentation.'}</p>
+                </div>
+              </div>
+
+              {/* Mapped Receptacles Segment */}
+              <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 shadow-lg flex-1 flex flex-col">
+                <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-800">
+                  <div>
+                    <h4 className="font-extrabold text-base text-white">
+                      Mapped Receptacles & Device Points ({activeReceptacles.length})
+                    </h4>
+                    <p className="text-xs text-slate-400">Manage outlets, panels, & lights controlled by this breaker</p>
+                  </div>
+
+                  <button 
+                    onClick={openAddReceptacle}
+                    disabled={selectedCircuit?.type === 'Blank'}
+                    className="flex items-center gap-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold px-3 py-2 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  >
+                    <Plus size={14} className="stroke-[3]" />
+                    <span>Map Receptacle</span>
+                  </button>
+                </div>
+
+                {activeReceptacles.length === 0 ? (
+                  <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-dashed border-slate-800 rounded-xl bg-slate-950/20">
+                    <div className="p-4 bg-slate-900 rounded-full text-slate-600 mb-3">
+                      <Zap size={32} />
+                    </div>
+                    <h5 className="font-bold text-slate-300 text-sm mb-1">No outlets mapped to this breaker yet</h5>
+                    <p className="text-xs text-slate-500 max-w-sm">
+                      Map wall receptacles, GFCI outlets, light switches, or hardwired appliance connectors to easily track them.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3 flex-1 overflow-y-auto max-h-[350px] pr-2">
+                    {activeReceptacles.map(rec => (
+                      <div 
+                        key={rec.id}
+                        className="bg-slate-950/80 hover:bg-slate-950 border border-slate-800 hover:border-slate-700 p-3 rounded-xl flex items-start justify-between transition-all"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="p-2 bg-slate-800 text-cyan-400 rounded-lg shrink-0 text-sm font-bold mt-0.5">
+                            {rec.type.substring(rec.type.length - 2)}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h6 className="font-bold text-sm text-slate-100">{rec.name}</h6>
+                              <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full">
+                                {rec.room}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-400 mt-1">{rec.notes}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1 shrink-0">
+                          <button 
+                            onClick={() => openEditReceptacle(rec)}
+                            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+                          >
+                            <Edit2 size={14} />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteReceptacle(rec.id)}
+                            className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-slate-800 rounded-lg transition-colors"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+          </div>
+        )}
+
+        {/* INTERACTIVE FLOOR PLAN VIEW */}
+        {activeTab === 'floorplan' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Visual floor simulation canvas */}
+            <div className="lg:col-span-8 flex flex-col gap-4">
+              <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-lg flex-1 min-h-[450px] flex flex-col relative">
+                <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                  <div>
+                    <h3 className="font-extrabold text-base text-white flex items-center gap-2">
+                      <Compass className="text-cyan-400" size={18} />
+                      <span>Interactive Outlets Floor Map</span>
+                    </h3>
+                    <p className="text-xs text-slate-400">Visually position receptacles onto home layout simulation zones</p>
+                  </div>
+                  <span className="text-xs text-slate-500 italic">Click breaker listed below to isolate circuit</span>
+                </div>
+
+                {/* Simulated Floorplan Grid Canvas */}
+                <div className="flex-1 bg-slate-900/60 border border-slate-800 rounded-xl relative overflow-hidden flex flex-col justify-between p-4 min-h-[350px]">
+                  
+                  <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none opacity-40" />
+
+                  <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 pointer-events-none border border-slate-800/40 opacity-70">
+                    <div className="border-r border-b border-slate-800/50 p-2 text-[10px] text-slate-600 font-extrabold tracking-widest uppercase">Office / Front Bed</div>
+                    <div className="border-r border-b border-slate-800/50 p-2 text-[10px] text-slate-600 font-extrabold tracking-widest uppercase">Living Area</div>
+                    <div className="border-b border-slate-800/50 p-2 text-[10px] text-slate-600 font-extrabold tracking-widest uppercase">Kitchen Space</div>
+                    <div className="border-r border-slate-800/50 p-2 text-[10px] text-slate-600 font-extrabold tracking-widest uppercase">Master Bedroom</div>
+                    <div className="border-r border-slate-800/50 p-2 text-[10px] text-slate-600 font-extrabold tracking-widest uppercase">Hallway / Baths</div>
+                    <div className="p-2 text-[10px] text-slate-600 font-extrabold tracking-widest uppercase">Laundry / Exterior</div>
+                  </div>
+
+                  {/* Render mapped receptacle pins */}
+                  {receptacles.map(rec => {
+                    const node = floorPlanNodes.find(n => n.id === rec.id) || { x: 50, y: 50 };
+                    const isSelectedCircuit = rec.circuitId === selectedCircuitId;
+                    
+                    return (
+                      <div 
+                        key={rec.id}
+                        className={`absolute cursor-pointer transition-all ${
+                          isSelectedCircuit 
+                            ? 'z-20 scale-125 duration-100' 
+                            : 'z-10 scale-100 opacity-60'
+                        }`}
+                        style={{ left: `${node.x}%`, top: `${node.y}%` }}
+                        onClick={() => setSelectedCircuitId(rec.circuitId)}
+                      >
+                        <div className={`p-1.5 rounded-full shadow-xl flex items-center justify-center relative border transition-colors ${
+                          isSelectedCircuit 
+                            ? 'bg-cyan-400 border-white text-slate-950 ring-4 ring-cyan-400/20' 
+                            : 'bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-500'
+                        }`}>
+                          <MapPin size={16} className="fill-current" />
+                          
+                          {/* Hover Tooltip Popup on focus */}
+                          <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-slate-950 border border-slate-800 rounded-lg p-2 text-left pointer-events-none hidden group-hover:block hover:block text-xs z-30 shadow-2xl">
+                            <span className="font-extrabold block text-white text-[11px] truncate">{rec.name}</span>
+                            <span className="text-[9px] text-cyan-400 font-mono block mt-0.5">Circuit: {rec.circuitId} ({rec.room})</span>
+                            <p className="text-[10px] text-slate-400 mt-1 italic">{rec.notes}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                </div>
+
+                <div className="mt-3 flex items-center gap-4 text-xs text-slate-400 bg-slate-900/40 p-2.5 rounded-xl border border-slate-800">
+                  <span className="font-bold text-amber-500">Mapping Hint:</span>
+                  <span>Click on any colored pin on the map to automatically isolate and select its corresponding electrical panel breaker.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Sidebar quick lists to jump and select circuits */}
+            <div className="lg:col-span-4 flex flex-col gap-4">
+              <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-lg flex-1 flex flex-col">
+                <h3 className="font-bold text-sm text-slate-300 mb-2 uppercase tracking-wider">Select Panel Breaker</h3>
+                <div className="space-y-1.5 flex-1 overflow-y-auto max-h-[450px]">
+                  {circuits.filter(c => c.type !== 'Blank').map(c => {
+                    const isSelected = selectedCircuitId === c.id;
+                    const recCount = receptacles.filter(r => r.circuitId === c.id).length;
+                    return (
+                      <button
+                        key={c.id}
+                        onClick={() => setSelectedCircuitId(c.id)}
+                        className={`w-full text-left p-2.5 rounded-xl border flex items-center justify-between transition-all ${
+                          isSelected 
+                            ? 'bg-cyan-500/10 border-cyan-500 text-white' 
+                            : 'bg-slate-900 border-slate-800 hover:border-slate-700 text-slate-300'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[9px] font-mono bg-slate-950 px-1 py-0.5 rounded text-slate-400">#{c.num}</span>
+                            <span className="text-xs font-extrabold">{c.label}</span>
+                          </div>
+                          <span className="text-[10px] text-slate-500 font-mono block mt-0.5">{c.amps}A Breaker</span>
+                        </div>
+                        {recCount > 0 && (
+                          <span className="text-xs font-bold bg-slate-950 text-cyan-400 px-2 py-1 rounded-md border border-slate-800">
+                            {recCount} mapped
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* PRINTABLE PANEL CARD DIRECTORY VIEW */}
+        {activeTab === 'print' && (
+          <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 shadow-xl max-w-4xl mx-auto flex flex-col gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div>
+                <h3 className="font-black text-lg text-white">Panel Directory Print Mode</h3>
+                <p className="text-xs text-slate-400">Formatted exactly to mimic physical cabinet sheets for quick taping inside the door</p>
+              </div>
+              <button 
+                onClick={() => window.print()}
+                className="flex items-center gap-2 bg-amber-500 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl hover:bg-amber-400 transition-colors"
+              >
+                <Printer size={16} />
+                <span>Trigger System Print</span>
+              </button>
+            </div>
+
+            {/* Simulated Actual Physical card printable zone */}
+            <div className="bg-white text-slate-950 p-6 rounded-lg font-mono text-xs shadow-inner max-w-2xl mx-auto border-2 border-slate-300 print:border-0 print:p-0 w-full" id="printable-panel-card">
+              <div className="border-4 border-double border-slate-900 p-4 text-center mb-4">
+                <h2 className="text-sm font-black tracking-widest uppercase">RESIDENTIAL POWER DISTRIBUTION DIRECTORY</h2>
+                <p className="text-[9px] text-slate-600 mt-1">MAIN SERVICE DISCONNECT: 200 AMPS | AC FREQUENCY: 60Hz</p>
+              </div>
+
+              {/* Printable Grid Split */}
+              <div className="grid grid-cols-2 gap-4 border-t border-b border-slate-950 py-3">
+                
+                {/* Left Side Even Slots */}
+                <div className="space-y-3">
+                  <h4 className="font-extrabold border-b border-slate-950 text-center uppercase tracking-widest pb-1 text-[10px]">LEFT OUTLETS A</h4>
+                  {circuits.filter(c => c.side === 'left').map(c => {
+                    const recs = receptacles.filter(r => r.circuitId === c.id);
+                    return (
+                      <div key={c.id} className="border-b border-dashed border-slate-300 pb-1.5 last:border-0">
+                        <div className="flex justify-between font-bold text-[10px]">
+                          <span>SPACE {c.num}: {c.label}</span>
+                          <span>{c.amps > 0 ? `${c.amps}A` : '---'}</span>
+                        </div>
+                        {recs.length > 0 ? (
+                          <p className="text-[9px] text-slate-700 italic mt-0.5 leading-relaxed">
+                            {recs.map(r => r.name).join(', ')}
+                          </p>
+                        ) : (
+                          <span className="text-[8px] text-slate-400 block mt-0.5">{c.notes}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Right Side Odd Slots */}
+                <div className="space-y-3">
+                  <h4 className="font-extrabold border-b border-slate-950 text-center uppercase tracking-widest pb-1 text-[10px]">RIGHT OUTLETS B</h4>
+                  {circuits.filter(c => c.side === 'right').map(c => {
+                    const recs = receptacles.filter(r => r.circuitId === c.id);
+                    return (
+                      <div key={c.id} className="border-b border-dashed border-slate-300 pb-1.5 last:border-0">
+                        <div className="flex justify-between font-bold text-[10px]">
+                          <span>SPACE {c.num}: {c.label}</span>
+                          <span>{c.amps > 0 ? `${c.amps}A` : '---'}</span>
+                        </div>
+                        {recs.length > 0 ? (
+                          <p className="text-[9px] text-slate-700 italic mt-0.5 leading-relaxed">
+                            {recs.map(r => r.name).join(', ')}
+                          </p>
+                        ) : (
+                          <span className="text-[8px] text-slate-400 block mt-0.5">{c.notes}</span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+              </div>
+
+              <div className="mt-4 text-[8px] text-center text-slate-500">
+                Generated via Circuit Mapping Digital Twin on {new Date().toLocaleDateString()}. Keep dry and protected inside door.
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* RECEPTACLE ADD / EDIT MODAL */}
+      {showRecModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+            <h4 className="text-lg font-black mb-1 text-white">
+              {editingRec ? 'Edit Receptacle Mapping' : 'Map New Device / Receptacle'}
+            </h4>
+            <p className="text-xs text-slate-400 mb-4">
+              Associate this point with Breaker Space {selectedCircuit?.num} ({selectedCircuit?.label})
+            </p>
+
+            <form onSubmit={handleSaveReceptacle} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Receptacle Name / Description</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="e.g. Master Bedroom Ceiling Light, Microwave Plug"
+                  value={newRecData.name}
+                  onChange={(e) => setNewRecData(prev => ({ ...prev, name: e.target.value }))}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Device Type</label>
+                  <select 
+                    value={newRecData.type}
+                    onChange={(e) => setNewRecData(prev => ({ ...prev, type: e.target.value }))}
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white"
+                  >
+                    {DEVICE_TYPES.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Room / Area</label>
+                  <select 
+                    value={newRecData.room}
+                    onChange={(e) => setNewRecData(prev => ({ ...prev, room: e.target.value }))}
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white"
+                  >
+                    {ROOM_OPTIONS.map(room => (
+                      <option key={room} value={room}>{room}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Specific Location Notes</label>
+                <textarea 
+                  rows={3}
+                  placeholder="e.g. On the west wall, located behind the nightstand"
+                  value={newRecData.notes}
+                  onChange={(e) => setNewRecData(prev => ({ ...prev, notes: e.target.value }))}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white resize-none"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button 
+                  type="button"
+                  onClick={() => setShowRecModal(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-800 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="px-4 py-2 text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-xl"
+                >
+                  Save Mapping
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* CIRCUIT EDIT MODAL */}
+      {showCircuitModal && editingCircuit && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+            <h4 className="text-lg font-black mb-1 text-white">
+              Edit Breaker Space {editingCircuit.num} Properties
+            </h4>
+            <p className="text-xs text-slate-400 mb-4">
+              Update circuit identifier and properties as marked on panel box labels.
+            </p>
+
+            <form onSubmit={handleSaveCircuit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Breaker Label</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="e.g. FSBED, AC SYSTEM"
+                  value={editingCircuit.label}
+                  onChange={(e) => setEditingCircuit(prev => ({ ...prev, label: e.target.value }))}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white font-mono"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Amperage Rating (Amps)</label>
+                  <select 
+                    value={editingCircuit.amps}
+                    onChange={(e) => setEditingCircuit(prev => ({ ...prev, amps: parseInt(e.target.value) }))}
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white"
+                  >
+                    <option value={15}>15 Amps</option>
+                    <option value={20}>20 Amps</option>
+                    <option value={25}>25 Amps</option>
+                    <option value={30}>30 Amps</option>
+                    <option value={40}>40 Amps</option>
+                    <option value={50}>50 Amps</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Breaker Type / Spec</label>
+                  <select 
+                    value={editingCircuit.type}
+                    onChange={(e) => setEditingCircuit(prev => ({ ...prev, type: e.target.value }))}
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white"
+                  >
+                    <option value="Standard">Standard Breaker</option>
+                    <option value="AFCI">AFCI Protected</option>
+                    <option value="GFCI">GFCI Protected</option>
+                    <option value="Double-Pole">Double-Pole (240V)</option>
+                    <option value="Double-Pole-Solar">Double-Pole Solar Feed</option>
+                    <option value="Blank">Blank Cover</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 uppercase mb-1">Coverage Scope Notes</label>
+                <textarea 
+                  rows={3}
+                  value={editingCircuit.notes}
+                  onChange={(e) => setEditingCircuit(prev => ({ ...prev, notes: e.target.value }))}
+                  className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:outline-none rounded-xl px-3 py-2 text-sm text-white resize-none"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button 
+                  type="button"
+                  onClick={() => setShowCircuitModal(false)}
+                  className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white bg-slate-800 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="px-4 py-2 text-xs font-bold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-xl"
+                >
+                  Update Properties
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Styled Physical Print CSS Overrides */}
+      <style>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          #printable-panel-card, #printable-panel-card * {
+            visibility: visible;
+          }
+          #printable-panel-card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            border: 2px solid black !important;
+            box-shadow: none !important;
+          }
+        }
+      `}</style>
+
+    </div>
+  );
+}

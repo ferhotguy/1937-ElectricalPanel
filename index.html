@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Panel Directory - 1937 Bristol Ct.</title>
+  
+  <!-- Local Tailwind CSS -->
+  <link rel="stylesheet" href="./css/tailwind.min.css" id="tailwind-local">
+  
+  <!-- Fallback to CDN for Tailwind if local fails to load -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const testDiv = document.createElement('div');
+      testDiv.className = 'hidden';
+      document.body.appendChild(testDiv);
+      const isHidden = window.getComputedStyle(testDiv).display === 'none';
+      document.body.removeChild(testDiv);
+      
+      if (!isHidden) {
+        console.warn("Local Tailwind CSS failed to load. Falling back to CDN.");
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css';
+        document.head.appendChild(link);
+      }
+    });
+  </script>
+
+  <style>
+    /* Flat UI Theme Colors Override */
+    body {
+      background-color: #2c3e50 !important;
+      color: #ecf0f1 !important;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .flat-header {
+      background-color: #34495e !important;
+      border-bottom: 3px solid #2c3e50 !important;
+    }
+    .flat-card {
+      background-color: #34495e !important;
+      border: 3px solid #2c3e50 !important;
+      border-radius: 12px !important;
+    }
+    .flat-card-inner {
+      background-color: #2c3e50 !important;
+      border: 2px solid #34495e !important;
+      border-radius: 8px !important;
+    }
+    .flat-breaker {
+      background-color: #2c3e50 !important;
+      border: 2px solid #34495e !important;
+      color: #ecf0f1 !important;
+      transition: all 0.15s ease;
+    }
+    .flat-breaker:hover {
+      background-color: #34495e !important;
+      border-color: #7f8c8d !important;
+    }
+    .flat-breaker-selected {
+      border: 3px solid #3498db !important; /* Peter River */
+      background-color: rgba(52, 152, 219, 0.1) !important;
+    }
+    .flat-breaker-solar {
+      border: 2px solid #e74c3c !important; /* Alizarin Red */
+    }
+    .flat-btn-primary {
+      background-color: #1abc9c !important; /* Turquoise */
+      color: #2c3e50 !important;
+      font-weight: 700 !important;
+      border: none !important;
+      transition: background-color 0.15s ease;
+    }
+    .flat-btn-primary:hover {
+      background-color: #16a085 !important; /* Green Sea */
+    }
+    .flat-btn-secondary {
+      background-color: #7f8c8d !important; /* Asbestos */
+      color: #ecf0f1 !important;
+      font-weight: 700 !important;
+      border: none !important;
+      transition: background-color 0.15s ease;
+    }
+    .flat-btn-secondary:hover {
+      background-color: #95a5a6 !important; /* Concrete */
+    }
+    .flat-btn-accent {
+      background-color: #e67e22 !important; /* Orange */
+      color: #ecf0f1 !important;
+      font-weight: 700 !important;
+      border: none !important;
+      transition: background-color 0.15s ease;
+    }
+    .flat-btn-accent:hover {
+      background-color: #d35400 !important; /* Pumpkin */
+    }
+    .flat-btn-danger {
+      background-color: #e74c3c !important; /* Alizarin Red */
+      color: #ecf0f1 !important;
+      font-weight: 700 !important;
+      border: none !important;
+      transition: background-color 0.15s ease;
+    }
+    .flat-btn-danger:hover {
+      background-color: #c0392b !important; /* Pomegranate */
+    }
+    .flat-badge-amps {
+      background-color: #f1c40f !important; /* Sunflower Yellow */
+      color: #2c3e50 !important;
+      font-weight: 800 !important;
+      border-radius: 4px !important;
+    }
+    .flat-badge-type {
+      background-color: #95a5a6 !important; /* Concrete */
+      color: #2c3e50 !important;
+      font-weight: 700 !important;
+    }
+    .flat-text-muted {
+      color: #bdc3c7 !important; /* Silver */
+    }
+    .flat-input {
+      background-color: #2c3e50 !important;
+      border: 2px solid #7f8c8d !important;
+      color: #ecf0f1 !important;
+    }
+    .flat-input:focus {
+      border-color: #3498db !important; /* Peter River */
+      outline: none;
+    }
+    .flat-toast {
+      background-color: #1abc9c !important;
+      color: #2c3e50 !important;
+      border: 2px solid #16a085 !important;
+    }
+    
+    /* Dropdown Options Explicit Coloring */
+    select option {
+      background-color: #34495e !important;
+      color: #ecf0f1 !important;
+    }
+
+    .flat-modal {
+      background-color: #34495e !important;
+      border: 4px solid #2c3e50 !important;
+      border-radius: 16px !important;
+    }
+  </style>
+</head>
+<body class="selection:bg-cyan-500 selection:text-slate-900 flex flex-col min-h-screen">
+
+  <!-- Application Mount Target -->
+  <div id="root"></div>
+
+  <!-- Local USB Stick Script Loader -->
+  <script src="./js/react.production.min.js"></script>
+  <script>
+    if (typeof React === 'undefined') {
+      console.warn("Local React failed to load. Falling back to CDN.");
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"><\/script>');
+    }
+  </script>
+
+  <script src="./js/react-dom.production.min.js"></script>
+  <script>
+    if (typeof ReactDOM === 'undefined') {
+      console.warn("Local ReactDOM failed to load. Falling back to CDN.");
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"><\/script>');
+    }
+  </script>
+
+  <script src="./js/babel.min.js"></script>
+  <script>
+    if (typeof Babel === 'undefined') {
+      console.warn("Local Babel failed to load. Falling back to CDN.");
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"><\/script>');
+    }
+  </script>
+
+  <!-- OFFLINE REACT APPLICATION ENGINE -->
+  <script type="text/babel">
+    const { useState, useMemo, useEffect } = React;
+
+    // ==================================================
+    // INLINE SVG COMPONENTS FOR LUCIDE ICONS (NO INTERNET REQUIRED)
+    // ==================================================
+    const Zap = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </svg>
+    );
+
+    const Plus = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+    );
+
+    const Trash2 = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <polyline points="3 6 5 6 21 6" />
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+        <line x1="10" y1="11" x2="10" y2="17" />
+        <line x1="14" y1="11" x2="14" y2="17" />
+      </svg>
+    );
+
+    const Edit2 = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+      </svg>
+    );
+
+    const Download = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V15" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+    );
+
+    const Upload = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V15" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
+    );
+
+    const Printer = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <polyline points="6 9 6 2 18 2 18 9" />
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+        <rect x="6" y="14" width="12" height="8" />
+      </svg>
+    );
+
+    const Search = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+    );
+
+    const AlertTriangle = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+        <line x1="12" y1="9" x2="12" y2="13" />
+        <line x1="12" y1="17" x2="12.01" y2="17" />
+      </svg>
+    );
+
+    const Check = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <polyline points="20 6 9 17 4 12" />
+      </svg>
+    );
+
+    const MapPin = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+    );
+
+    const Layers = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <polygon points="12 2 2 7 12 12 22 7 12 2" />
+        <polyline points="2 17 12 22 22 17" />
+        <polyline points="2 12 12 17 22 12" />
+      </svg>
+    );
+
+    const Database = ({ size = 24, className = '', ...props }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+        <ellipse cx="12" cy="5" rx="9" ry="3" />
+        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+      </svg>
+    );
+
+    // ==================================================
+    // INITIAL DIGITAL TWIN PANEL DATA (UPDATED SCHEME)
+    // ==================================================
+    const INITIAL_CIRCUITS = [
+      // --- LEFT COLUMN (EVEN SPACES - MAPPED TO 101-115) ---
+      { id: 'L30', num: '30', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L28', num: '28', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L26', num: '26', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L24', num: '24', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L22', num: '22', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L20', num: '20', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L18', num: '18', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L16', num: '16', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L14', num: '14', side: 'left', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Blank cover' },
+      { id: 'L12', num: '12', side: 'left', label: 'Breaker', type: 'AFCI', amps: 15, notes: 'Front South Bedroom & Fire Sprinkler Alarm System' },
+      { id: 'L10', num: '10', side: 'left', label: 'Breaker', type: 'AFCI', amps: 15, notes: 'Home Office desk receptacles, lights & network closet' },
+      { id: 'L8',  num: '8',  side: 'left', label: 'Breaker', type: 'AFCI', amps: 15, notes: 'Guest Bedroom wall outlets and overhead ceiling fans' },
+      { id: 'L6',  num: '6',  side: 'left', label: 'Breaker', type: 'AFCI', amps: 15, notes: 'Main/Mom\'s Bathroom vanity GFCI and shower lighting' },
+      { id: 'L4',  num: '4',  side: 'left', label: 'Breaker', type: 'AFCI', amps: 15, notes: 'Master Bedroom main outlets, bedside lamps & walk-in closet' },
+      { id: 'L2',  num: '2',  side: 'left', label: 'Breaker', type: 'AFCI', amps: 15, notes: 'Living Room entertainment center, accent lights & wall plugs' },
+
+      // --- RIGHT COLUMN (ODD SPACES - MAPPED TO 201-214) ---
+      { id: 'R29-27', num: '29/27', side: 'right', label: 'Breaker', type: 'Double-Pole-Solar', amps: 20, notes: 'Solar Inverter Feed. WARNING: Do not relocate this overcurrent device!' },
+      { id: 'R25', num: '25', side: 'right', label: 'Breaker', type: 'Blank', amps: 0, notes: 'Spare slot' },
+      { id: 'R23-21', num: '23/21', side: 'right', label: 'Breaker', type: 'Double-Pole', amps: 20, notes: 'Electric Water Heater unit' },
+      { id: 'R19', num: '19', side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Exterior Irrigation Sprinkler Controller' },
+      { id: 'R17', num: '17', side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Kitchen stove ventilation hood fan & task lighting' },
+      { id: 'R15', num: '15', side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Dedicated Refrigerator outlet in kitchen kitchen bay' },
+      { id: 'R13', num: '13', side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Dryer unit power (120V ignition/motor or gas setup)' },
+      { id: 'R11', num: '11', side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Dedicated Laundry Washing Machine wall outlet' },
+      { id: 'R9',  num: '9',  side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Kitchen countertop small appliance receptacles (Circuit A)' },
+      { id: 'R7',  num: '7',  side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Kitchen countertop small appliance receptacles (Circuit B)' },
+      { id: 'R5',  num: '5',  side: 'right', label: 'Breaker', type: 'Standard', amps: 20, notes: 'Dining Room receptacles & kitchen/dining island' },
+      { id: 'R3-1', num: '3/1', side: 'right', label: 'Breaker', type: 'Double-Pole', amps: 25, notes: 'Central Air Conditioning condenser / compressor unit' },
+    ];
+
+    const INITIAL_RECEPTACLES = [
+      { id: 'rec-1', circuitId: 'L10', name: 'Main Desk Double Outlet', type: 'Outlet 🔌', room: 'Office', notes: 'Powers PC, monitors, and standing desk.' },
+      { id: 'rec-2', circuitId: 'L10', name: 'Network Cabinet Outlet', type: 'Outlet 🔌', room: 'Office', notes: 'Powers router, fiber modem, and smart hub.' },
+      { id: 'rec-3', circuitId: 'R15', name: 'Main Refrigerator Plug', type: 'Appliance 🍳', room: 'Kitchen', notes: 'Dedicated single receptacle behind the fridge.' },
+      { id: 'rec-4', circuitId: 'L12', name: 'Fire Sprinkler Flow Monitor', type: 'Other ⚙️', room: 'Garage/Utility', notes: 'Hardwired alarm monitoring panel.' },
+      { id: 'rec-5', circuitId: 'L2',  name: 'TV Entertainment Center Plugs', type: 'Outlet 🔌', room: 'Living Room', notes: 'TV, Soundbar, and Game Console.' },
+      { id: 'rec-6', circuitId: 'L6',  name: 'GFCI Vanity Outlet', type: 'GFCI Outlet 🛡️', room: 'Mom\'s Bath', notes: 'Hairdryer and shaver outlet near sink.' },
+      { id: 'rec-7', circuitId: 'R19', name: 'Irrigation Controller Box', type: 'Appliance 🍳', room: 'Exterior', notes: 'Wall mounted sprinkler timer.' },
+      { id: 'rec-8', circuitId: 'L4',  name: 'Master Bed Left Wall Socket', type: 'Outlet 🔌', room: 'Master Bed', notes: 'Bedside phone chargers & lamp.' },
+    ];
+
+    const ROOM_OPTIONS = [
+      'Office', 'Kitchen', 'Living Room', 'Master Bed', 'Guest Bed', 
+      'Front Bed', 'Mom\'s Bath', 'Dining Room', 'Garage', 'Laundry Room', 'Exterior'
+    ];
+
+    const DEVICE_TYPES = [
+      'Outlet 🔌', 'GFCI Outlet 🛡️', 'Light 💡', 'Switch 🎛️', 'Appliance 🍳', 'Solar Inverter ☀️', 'Other ⚙️'
+    ];
+
+    function App() {
+      const [circuits, setCircuits] = useState(INITIAL_CIRCUITS);
+      const [receptacles, setReceptacles] = useState(INITIAL_RECEPTACLES);
+      const [selectedCircuitId, setSelectedCircuitId] = useState('L10'); 
+      const [searchQuery, setSearchQuery] = useState('');
+      const [activeTab, setActiveTab] = useState('directory'); // 'directory' or 'print'
+      
+      const [showRecModal, setShowRecModal] = useState(false);
+      const [editingRec, setEditingRec] = useState(null);
+      const [newRecData, setNewRecData] = useState({
+        name: '',
+        type: 'Outlet 🔌',
+        room: 'Office',
+        notes: ''
+      });
+
+      const [showCircuitModal, setShowCircuitModal] = useState(false);
+      const [editingCircuit, setEditingCircuit] = useState(null);
+      const [roomOptions, setRoomOptions] = useState(ROOM_OPTIONS);
+      const [showRoomModal, setShowRoomModal] = useState(false);
+
+      const [toastMessage, setToastMessage] = useState(null);
+      const triggerToast = (msg) => {
+        setToastMessage(msg);
+        setTimeout(() => setToastMessage(null), 3000);
+      };
+
+      const selectedCircuit = useMemo(() => {
+        return circuits.find(c => c.id === selectedCircuitId);
+      }, [selectedCircuitId, circuits]);
+
+      // Filter receptacles of selected circuit by search query if search is active
+      const activeReceptacles = useMemo(() => {
+        const recs = receptacles.filter(r => r.circuitId === selectedCircuitId);
+        if (!searchQuery.trim()) return recs;
+        const q = searchQuery.toLowerCase();
+        return recs.filter(r => 
+          r.name.toLowerCase().includes(q) || 
+          r.room.toLowerCase().includes(q) || 
+          r.notes.toLowerCase().includes(q)
+        );
+      }, [receptacles, selectedCircuitId, searchQuery]);
+
+      // Calculate which circuits match the search query (to highlight/dim them)
+      const searchMatchingIds = useMemo(() => {
+        if (!searchQuery.trim()) return null;
+        const q = searchQuery.toLowerCase();
+        return new Set(
+          circuits
+            .filter(c => {
+              const labelMatch = c.label.toLowerCase().includes(q);
+              const idMatch = c.id.toLowerCase().includes(q);
+              const notesMatch = c.notes?.toLowerCase().includes(q);
+              const numMatch = c.num.includes(q);
+              const recsMatch = receptacles.some(r => r.circuitId === c.id && (
+                r.name.toLowerCase().includes(q) || 
+                r.room.toLowerCase().includes(q) || 
+                r.notes.toLowerCase().includes(q)
+              ));
+              return labelMatch || idMatch || notesMatch || numMatch || recsMatch;
+            })
+            .map(c => c.id)
+        );
+      }, [circuits, receptacles, searchQuery]);
+
+      const handleSaveCircuit = (e) => {
+        e.preventDefault();
+        setCircuits(prev => prev.map(c => c.id === editingCircuit.id ? editingCircuit : c));
+        setShowCircuitModal(false);
+        triggerToast(`Updated ${editingCircuit.label}`);
+      };
+
+      const openAddReceptacle = () => {
+        setEditingRec(null);
+        setNewRecData({
+          name: '',
+          type: 'Outlet 🔌',
+          room: 'Office',
+          notes: ''
+        });
+        setShowRecModal(true);
+      };
+
+      const openEditReceptacle = (rec) => {
+        setEditingRec(rec);
+        setNewRecData({
+          name: rec.name,
+          type: rec.type,
+          room: rec.room,
+          notes: rec.notes
+        });
+        setShowRecModal(true);
+      };
+
+      const handleSaveReceptacle = (e) => {
+        e.preventDefault();
+        if (!newRecData.name.trim()) return;
+
+        if (editingRec) {
+          setReceptacles(prev => prev.map(r => r.id === editingRec.id ? { ...r, ...newRecData } : r));
+          triggerToast('Receptacle mapping updated');
+        } else {
+          const newId = `rec-${Date.now()}`;
+          const newRec = {
+            id: newId,
+            circuitId: selectedCircuitId,
+            ...newRecData
+          };
+          setReceptacles(prev => [...prev, newRec]);
+          triggerToast('New receptacle mapped successfully!');
+        }
+        setShowRecModal(false);
+      };
+
+      const handleDeleteReceptacle = (id) => {
+        setReceptacles(prev => prev.filter(r => r.id !== id));
+        triggerToast('Receptacle unmapped.');
+      };
+
+      const handleRenameRoom = (oldName, newName) => {
+        if (!newName.trim() || oldName === newName) return;
+        setRoomOptions(prev => prev.map(r => r === oldName ? newName : r));
+        setReceptacles(prev => prev.map(rec => rec.room === oldName ? { ...rec, room: newName } : rec));
+        triggerToast(`Renamed room to ${newName}`);
+      };
+
+      const handleDeleteRoom = (roomName) => {
+        setRoomOptions(prev => prev.filter(r => r !== roomName));
+        triggerToast(`Removed room ${roomName}`);
+      };
+
+      const handleAddRoom = (newRoomName) => {
+        if (!newRoomName.trim()) return;
+        if (roomOptions.includes(newRoomName)) {
+          triggerToast('Room name already exists!');
+          return;
+        }
+        setRoomOptions(prev => [...prev, newRoomName]);
+        triggerToast(`Added room ${newRoomName}`);
+      };
+
+      const handleExportJSON = () => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ circuits, receptacles, roomOptions }, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `circuit_panel_directory_export.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        triggerToast('Exported project data successfully!');
+      };
+
+      const handleImportJSON = (e) => {
+        const fileReader = new FileReader();
+        if (e.target.files && e.target.files[0]) {
+          fileReader.readAsText(e.target.files[0], "UTF-8");
+          fileReader.onload = (event) => {
+            try {
+              const parsed = JSON.parse(event.target.result);
+              if (parsed.circuits && parsed.receptacles) {
+                setCircuits(parsed.circuits);
+                setReceptacles(parsed.receptacles);
+                if (parsed.roomOptions) {
+                  setRoomOptions(parsed.roomOptions);
+                }
+                triggerToast('Successfully restored backup database!');
+              } else {
+                triggerToast('Error: Invalid backup file format');
+              }
+            } catch (err) {
+              triggerToast('Error reading backup file');
+            }
+          };
+        }
+      };
+
+      return (
+        <div className="min-h-screen flex flex-col">
+          {/* Toast Alert Banner */}
+          {toastMessage && (
+            <div className="fixed top-4 right-4 z-50 flat-toast font-bold px-4 py-3 rounded-xl shadow-none flex items-center gap-2 border animate-bounce">
+              <Check size={18} className="stroke-[3]" />
+              <span>{toastMessage}</span>
+            </div>
+          )}
+
+          {/* Top Professional Header Bar */}
+          <header className="flat-header sticky top-0 z-30 px-4 py-3">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-[#f1c40f] rounded-xl text-slate-900">
+                  <Zap className="fill-current stroke-[2]" size={24} />
+                </div>
+                <div>
+                  <h1 className="text-xl font-extrabold tracking-tight text-[#ecf0f1]">
+                    Circuit Mapping & Receptacle Directory
+                  </h1>
+                  <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 text-xs flat-text-muted">
+                    <span>Digital twin of physical residential panel system</span>
+                    <span className="hidden md:inline text-slate-500">•</span>
+                    <span className="text-[#f1c40f] font-semibold flex items-center gap-1">
+                      <MapPin size={12} className="inline stroke-[2.5]" /> 1937 Bristol Ct. Linda, CA 95901
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Search Bar */}
+              <div className="relative w-full sm:w-72">
+                <Search className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                <input 
+                  type="text" 
+                  placeholder="Search outlets, rooms, or breakers..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 text-sm flat-input rounded-xl text-white placeholder-slate-400"
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-2.5 text-xs text-slate-400 hover:text-white"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={handleExportJSON}
+                  className="p-2 flat-breaker hover:bg-[#34495e] text-slate-300 rounded-lg hover:text-white transition-all border border-[#7f8c8d]"
+                  title="Export Project Backup File"
+                >
+                  <Download size={18} />
+                </button>
+                <label 
+                  className="p-2 flat-breaker hover:bg-[#34495e] text-slate-300 rounded-lg hover:text-white transition-all border border-[#7f8c8d] cursor-pointer"
+                  title="Upload / Restore Backup File"
+                >
+                  <Upload size={18} />
+                  <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />
+                </label>
+                <button 
+                  onClick={() => setShowRoomModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg border flat-breaker text-slate-300 hover:text-white border-[#7f8c8d]"
+                  title="Manage Room / Area Options"
+                >
+                  <Layers size={14} />
+                  <span>Manage Rooms</span>
+                </button>
+                <button 
+                  onClick={() => setActiveTab(activeTab === 'print' ? 'directory' : 'print')}
+                  className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-lg border transition-all ${
+                    activeTab === 'print' 
+                      ? 'flat-btn-accent text-white' 
+                      : 'flat-breaker text-slate-300 hover:text-white border-[#7f8c8d]'
+                  }`}
+                >
+                  <Printer size={14} />
+                  <span>Print Panel Door Card</span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          {/* Primary Layout Area */}
+          <main className="flex-1 max-w-7xl mx-auto w-full p-4 lg:p-6">
+            {activeTab === 'directory' && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                {/* COLUMN 1: INTERACTIVE PANEL TWIN COMPONENT (5 cols) */}
+                <div className="lg:col-span-5 flat-card p-5">
+                  <div className="flex items-center justify-between mb-4 border-b-2 border-[#2c3e50] pb-3">
+                    <div>
+                      <h2 className="font-bold text-base flex items-center gap-2">
+                        <Database size={16} className="text-[#1abc9c]" />
+                        <span>Interactive Panel Mockup</span>
+                      </h2>
+                      <p className="text-xs flat-text-muted">Click breakers to map electrical receptacles</p>
+                    </div>
+                    <span className="text-[10px] uppercase bg-[#2c3e50] px-2 py-1 rounded font-bold text-slate-300">
+                      200A SERVICE
+                    </span>
+                  </div>
+
+                  {/* Physical Panel Graphics Outer Frame */}
+                  <div className="bg-[#2c3e50] rounded-2xl p-4 border-4 border-[#34495e] relative">
+                    <div className="bg-[#34495e] rounded-lg p-2 mb-4 text-center border-2 border-[#2c3e50]">
+                      <div className="text-[10px] text-[#e74c3c] font-extrabold uppercase tracking-widest flex justify-center items-center gap-1.5">
+                        <AlertTriangle size={11} /> WARNING: PHOTOVOLTAIC SOLAR CONNECTED
+                      </div>
+                    </div>
+
+                    {/* Left/Right Grid Layout containing Breakers */}
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-1 bg-[#1a252f] rounded-xl p-3 relative">
+                      
+                      {/* LEFT BREAKER SLOTS (EVEN SPACES) */}
+                      <div className="flex flex-col gap-1 pr-1 border-r-2 border-[#2c3e50]">
+                        <div className="text-center text-[10px] font-bold flat-text-muted mb-1 tracking-widest uppercase">
+                          Left Side (A)
+                        </div>
+                        {circuits.filter(c => c.side === 'left').map(circuit => {
+                          const isSelected = selectedCircuitId === circuit.id;
+                          const hasMapped = receptacles.some(r => r.circuitId === circuit.id);
+                          const isMatch = searchMatchingIds === null || searchMatchingIds.has(circuit.id);
+                          
+                          return (
+                            <div 
+                              key={circuit.id}
+                              onClick={() => setSelectedCircuitId(circuit.id)}
+                              className={`group cursor-pointer rounded-lg p-1.5 transition-all duration-150 flex items-center justify-between relative ${
+                                isSelected 
+                                  ? 'flat-breaker-selected' 
+                                  : 'flat-breaker'
+                              } ${!isMatch ? 'opacity-25' : ''}`}
+                            >
+                              {/* Breaker Info Display */}
+                              <div className="flex-1 min-w-0 pr-1">
+                                <div className="flex items-center gap-1">
+                                  <span className="text-[9px] font-extrabold text-[#2c3e50] bg-[#bdc3c7] px-1 py-0.5 rounded">
+                                    {circuit.num}
+                                  </span>
+                                  <span className={`text-[10px] font-extrabold truncate ${
+                                    circuit.type === 'Blank' ? 'text-[#7f8c8d]' : 'text-[#ecf0f1]'
+                                  }`}>
+                                    {circuit.label}
+                                  </span>
+                                </div>
+                                {circuit.type !== 'Blank' && (
+                                  <div className="flex items-center gap-1 mt-0.5">
+                                    <span className="text-[9px] text-[#f1c40f] font-medium">
+                                      {circuit.amps}A
+                                    </span>
+                                    <span className="text-[8px] bg-[#34495e] px-1 rounded text-slate-300 uppercase font-mono">
+                                      {circuit.type}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Physical Visual Switch Handle Representation */}
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                {circuit.type === 'AFCI' && (
+                                  <div className="w-2 h-2 rounded-full bg-[#f1c40f] border border-slate-950 flex shrink-0 items-center justify-center animate-pulse" title="AFCI Self-Test Switch" />
+                                )}
+                                
+                                {circuit.type !== 'Blank' ? (
+                                  <div className="w-8 h-4 bg-slate-950 rounded-sm relative border border-slate-700 flex items-center justify-start px-0.5">
+                                    <div className="w-4.5 h-3 bg-slate-800 rounded-sm shadow ml-auto flex items-center justify-center text-[7px] text-slate-400 font-bold">
+                                      ON
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="w-8 h-4 bg-slate-900 border border-dashed border-slate-800 rounded-sm flex items-center justify-center text-[7px] text-slate-700">
+                                    MT
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Receptacle count badge */}
+                              {hasMapped && (
+                                <span className="absolute -top-1 -right-1 bg-[#1abc9c] text-[#2c3e50] text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                                  {receptacles.filter(r => r.circuitId === circuit.id).length}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* RIGHT BREAKER SLOTS (ODD SPACES) */}
+                      <div className="flex flex-col gap-1 pl-1">
+                        <div className="text-center text-[10px] font-bold flat-text-muted mb-1 tracking-widest uppercase">
+                          Right Side (B)
+                        </div>
+                        {circuits.filter(c => c.side === 'right').map(circuit => {
+                          const isSelected = selectedCircuitId === circuit.id;
+                          const hasMapped = receptacles.some(r => r.circuitId === circuit.id);
+                          const isSolar = circuit.type === 'Double-Pole-Solar';
+                          const isMatch = searchMatchingIds === null || searchMatchingIds.has(circuit.id);
+
+                          return (
+                            <div 
+                              key={circuit.id}
+                              onClick={() => setSelectedCircuitId(circuit.id)}
+                              className={`group cursor-pointer rounded-lg p-1.5 transition-all duration-150 flex items-center justify-between relative ${
+                                isSelected 
+                                  ? 'flat-breaker-selected' 
+                                  : isSolar 
+                                    ? 'flat-breaker flat-breaker-solar'
+                                    : 'flat-breaker'
+                              } ${!isMatch ? 'opacity-25' : ''}`}
+                            >
+                              {/* Physical Switch Handle */}
+                              <div className="flex items-center gap-1.5 shrink-0 pr-1">
+                                {circuit.type !== 'Blank' ? (
+                                  <div className="w-8 h-4 bg-slate-950 rounded-sm relative border border-slate-700 flex items-center justify-start px-0.5">
+                                    <div className="w-4.5 h-3 bg-slate-800 rounded-sm shadow flex items-center justify-center text-[7px] text-slate-400 font-bold">
+                                      ON
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="w-8 h-4 bg-slate-900 border border-dashed border-slate-800 rounded-sm flex items-center justify-center text-[7px] text-slate-700">
+                                    MT
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Breaker Info */}
+                              <div className="flex-1 min-w-0 pl-1 text-right">
+                                <div className="flex items-center justify-end gap-1">
+                                  <span className={`text-[10px] font-extrabold truncate ${
+                                    isSolar ? 'text-[#e74c3c]' : circuit.type === 'Blank' ? 'text-[#7f8c8d]' : 'text-[#ecf0f1]'
+                                  }`}>
+                                    {circuit.label}
+                                  </span>
+                                  <span className="text-[9px] font-extrabold text-[#2c3e50] bg-[#bdc3c7] px-1 py-0.5 rounded">
+                                    {circuit.num}
+                                  </span>
+                                </div>
+                                {circuit.type !== 'Blank' && (
+                                  <div className="flex items-center justify-end gap-1 mt-0.5">
+                                    <span className={`text-[8px] px-1 rounded uppercase font-mono ${
+                                      isSolar ? 'bg-[#e74c3c]/20 text-[#e74c3c]' : 'bg-[#34495e] text-slate-300'
+                                    }`}>
+                                      {circuit.type === 'Double-Pole-Solar' ? 'PV FEED' : circuit.type}
+                                    </span>
+                                    <span className="text-[9px] text-[#f1c40f] font-medium">
+                                      {circuit.amps}A
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* Receptacle count badge */}
+                              {hasMapped && (
+                                <span className="absolute -top-1 -right-1 bg-[#1abc9c] text-[#2c3e50] text-[8px] font-black w-4 h-4 rounded-full flex items-center justify-center">
+                                  {receptacles.filter(r => r.circuitId === circuit.id).length}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                    </div>
+
+                    {/* Main Breaker Space at Bottom */}
+                    <div className="mt-4 pt-3 border-t-2 border-dashed border-[#34495e] flex flex-col items-center">
+                      <div className="w-full max-w-sm bg-[#34495e] border border-[#2c3e50] rounded-xl p-3 flex items-center justify-between">
+                        <div>
+                          <span className="text-[10px] flat-text-muted font-bold uppercase tracking-wider block">Main Disconnect</span>
+                          <span className="text-xs text-slate-400 font-medium">240V Service / Panel Outer Switch</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-xl font-black text-[#f1c40f]">200A</span>
+                          <div className="w-14 h-8 bg-slate-950 border border-slate-700 rounded-lg flex items-center px-1 relative">
+                            <div className="w-6 h-6 bg-slate-800 text-slate-100 rounded text-[9px] font-extrabold flex items-center justify-center ml-auto shadow">
+                              ON
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* COLUMN 2: SELECTED BREAKER MAPPINGS & DETAILS CARD (7 cols) */}
+                <div className="lg:col-span-7 flex flex-col gap-6">
+                  
+                  {/* Circuit Header Detail Box */}
+                  <div className="flat-card p-5 relative overflow-hidden">
+                    <div className="absolute right-0 top-0 h-32 w-32 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none" />
+                    
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#2c3e50] pb-4 mb-4">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="px-2.5 py-1 bg-[#2c3e50] text-[#1abc9c] text-xs font-mono font-black rounded-lg">
+                            BREAKER {selectedCircuit?.num}
+                          </span>
+                          <span className={`text-[10px] px-2 py-0.5 rounded font-black uppercase ${
+                            selectedCircuit?.type === 'AFCI' 
+                              ? 'bg-[#e67e22]/20 border border-[#e67e22] text-[#e67e22]' 
+                              : selectedCircuit?.type === 'Double-Pole-Solar'
+                                ? 'bg-[#e74c3c]/20 border border-[#e74c3c] text-[#e74c3c]'
+                                : 'bg-[#2c3e50] text-slate-300'
+                          }`}>
+                            {selectedCircuit?.type} Protection
+                          </span>
+                        </div>
+                        <h3 className="text-2xl font-black text-white flex items-center gap-2">
+                          {selectedCircuit?.label}
+                        </h3>
+                      </div>
+
+                      <div className="flex items-center gap-2 shrink-0">
+                        <button 
+                          onClick={() => {
+                            setEditingCircuit({ ...selectedCircuit });
+                            setShowCircuitModal(true);
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs flat-breaker hover:bg-[#34495e] border border-[#7f8c8d] text-slate-300 rounded-lg hover:text-white transition-all"
+                        >
+                          <Edit2 size={13} />
+                          <span>Edit Label / Info</span>
+                        </button>
+                        {selectedCircuit?.type !== 'Blank' && (
+                          <span className="text-3xl font-black flat-badge-amps px-4 py-1.5 bg-slate-950 rounded-xl flex items-center gap-1.5">
+                            {selectedCircuit?.amps}
+                            <span className="text-xs text-[#2c3e50] font-bold uppercase tracking-widest">Amps</span>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flat-card-inner p-3">
+                      <span className="text-[10px] flat-text-muted font-bold uppercase tracking-wider block mb-1">Functional Coverage Notes</span>
+                      <p className="text-xs text-slate-300 italic">{selectedCircuit?.notes || 'No description provided for this breaker. Tap Edit Label to write descriptive documentation.'}</p>
+                    </div>
+                  </div>
+
+                  {/* Mapped Receptacles Segment */}
+                  <div className="flat-card p-5 flex-1 flex flex-col">
+                    <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#2c3e50]">
+                      <div>
+                        <h4 className="font-extrabold text-base text-white">
+                          Mapped Receptacles & Device Points ({activeReceptacles.length})
+                        </h4>
+                        <p className="text-xs flat-text-muted">Manage outlets, panels, & lights controlled by this breaker</p>
+                      </div>
+
+                      <button 
+                        onClick={openAddReceptacle}
+                        disabled={selectedCircuit?.type === 'Blank'}
+                        className="flex items-center gap-1.5 flat-btn-primary text-xs font-bold px-3 py-2 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      >
+                        <Plus size={14} className="stroke-[3]" />
+                        <span>Map Receptacle</span>
+                      </button>
+                    </div>
+
+                    {activeReceptacles.length === 0 ? (
+                      <div className="flex-1 flex flex-col items-center justify-center text-center p-8 border border-dashed border-[#2c3e50] rounded-xl bg-[#2c3e50]/20">
+                        <div className="p-4 bg-[#2c3e50] rounded-full text-[#7f8c8d] mb-3">
+                          <Zap size={32} />
+                        </div>
+                        <h5 className="font-bold text-slate-300 text-sm mb-1">No outlets mapped to this breaker yet</h5>
+                        <p className="text-xs flat-text-muted max-w-sm">
+                          Map wall receptacles, GFCI outlets, light switches, or hardwired appliance connectors to easily track them.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-3 flex-1 overflow-y-auto max-h-[350px] pr-2">
+                        {activeReceptacles.map(rec => (
+                          <div 
+                            key={rec.id}
+                            className="bg-[#2c3e50] border border-[#34495e] hover:border-[#7f8c8d] p-3 rounded-xl flex items-start justify-between transition-all"
+                          >
+                            <div className="flex items-start gap-3">
+                              <div className="p-2 bg-[#34495e] text-[#1abc9c] rounded-lg shrink-0 text-sm font-bold mt-0.5">
+                                {rec.type.substring(rec.type.length - 2)}
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <h6 className="font-bold text-sm text-slate-100">{rec.name}</h6>
+                                  <span className="text-[10px] bg-[#34495e] flat-text-muted px-2 py-0.5 rounded-full">
+                                    {rec.room}
+                                  </span>
+                                </div>
+                                <p className="text-xs flat-text-muted mt-1">{rec.notes}</p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-1 shrink-0">
+                              <button 
+                                onClick={() => openEditReceptacle(rec)}
+                                className="p-1.5 text-slate-400 hover:text-white hover:bg-[#34495e] rounded-lg transition-colors"
+                              >
+                                <Edit2 size={14} />
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteReceptacle(rec.id)}
+                                className="p-1.5 text-slate-500 hover:text-red-400 hover:bg-[#34495e] rounded-lg transition-colors"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            )}
+
+            {/* PRINTABLE PANEL CARD DIRECTORY VIEW */}
+            {activeTab === 'print' && (
+              <div className="flat-card p-6 shadow-none max-w-4xl mx-auto flex flex-col gap-6">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-[#2c3e50] pb-4">
+                  <div>
+                    <h3 className="font-black text-lg text-white">Panel Directory Print Mode</h3>
+                    <p className="text-xs flat-text-muted">Formatted exactly to mimic physical cabinet sheets for quick taping inside the door</p>
+                  </div>
+                  <button 
+                    onClick={() => window.print()}
+                    className="flex items-center gap-2 flat-btn-accent text-white font-extrabold px-4 py-2.5 rounded-xl transition-colors"
+                  >
+                    <Printer size={16} />
+                    <span>Trigger System Print</span>
+                  </button>
+                </div>
+
+                {/* Simulated Actual Physical card printable zone */}
+                <div className="bg-white text-slate-950 p-6 rounded-lg font-mono text-xs shadow-inner max-w-2xl mx-auto border-2 border-slate-300 print:border-0 print:p-0 w-full" id="printable-panel-card">
+                  <div className="border-4 border-double border-slate-900 p-4 text-center mb-4">
+                    <h2 className="text-sm font-black tracking-widest uppercase">RESIDENTIAL POWER DISTRIBUTION DIRECTORY</h2>
+                    <p className="text-[9px] text-slate-600 mt-1">MAIN SERVICE DISCONNECT: 200 AMPS | AC FREQUENCY: 60Hz</p>
+                  </div>
+
+                  {/* Printable Grid Split */}
+                  <div className="grid grid-cols-2 gap-4 border-t border-b border-slate-950 py-3">
+                    
+                    {/* Left Side Even Slots */}
+                    <div className="space-y-3">
+                      <h4 className="font-extrabold border-b border-slate-950 text-center uppercase tracking-widest pb-1 text-[10px]">LEFT OUTLETS A</h4>
+                      {circuits.filter(c => c.side === 'left').map(c => {
+                        const recs = receptacles.filter(r => r.circuitId === c.id);
+                        return (
+                          <div key={c.id} className="border-b border-dashed border-slate-300 pb-1.5 last:border-0">
+                            <div className="flex justify-between font-bold text-[10px]">
+                              <span>SPACE {c.num}: {c.label}</span>
+                              <span>{c.amps > 0 ? `${c.amps}A` : '---'}</span>
+                            </div>
+                            {recs.length > 0 ? (
+                              <p className="text-[9px] text-slate-700 italic mt-0.5 leading-relaxed">
+                                {recs.map(r => r.name).join(', ')}
+                              </p>
+                            ) : (
+                              <span className="text-[8px] text-slate-400 block mt-0.5">{c.notes}</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Right Side Odd Slots */}
+                    <div className="space-y-3">
+                      <h4 className="font-extrabold border-b border-slate-950 text-center uppercase tracking-widest pb-1 text-[10px]">RIGHT OUTLETS B</h4>
+                      {circuits.filter(c => c.side === 'right').map(c => {
+                        const recs = receptacles.filter(r => r.circuitId === c.id);
+                        return (
+                          <div key={c.id} className="border-b border-dashed border-slate-300 pb-1.5 last:border-0">
+                            <div className="flex justify-between font-bold text-[10px]">
+                              <span>SPACE {c.num}: {c.label}</span>
+                              <span>{c.amps > 0 ? `${c.amps}A` : '---'}</span>
+                            </div>
+                            {recs.length > 0 ? (
+                              <p className="text-[9px] text-slate-700 italic mt-0.5 leading-relaxed">
+                                {recs.map(r => r.name).join(', ')}
+                              </p>
+                            ) : (
+                              <span className="text-[8px] text-slate-400 block mt-0.5">{c.notes}</span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                  </div>
+
+                  <div className="mt-4 text-[8px] text-center text-slate-500">
+                    Generated via Circuit Mapping Digital Twin on {new Date().toLocaleDateString()}. Keep dry and protected inside door.
+                  </div>
+                </div>
+              </div>
+            )}
+          </main>
+
+          {/* RECEPTACLE ADD / EDIT MODAL */}
+          {showRecModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}>
+              <div className="flat-modal w-full max-w-md p-6 relative text-white animate-fade-in">
+                <h4 className="text-lg font-black mb-1 text-white">
+                  {editingRec ? 'Edit Receptacle Mapping' : 'Map New Device / Receptacle'}
+                </h4>
+                <p className="text-xs flat-text-muted mb-4">
+                  Associate this point with Breaker Space {selectedCircuit?.num} ({selectedCircuit?.label})
+                </p>
+
+                <form onSubmit={handleSaveReceptacle} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Receptacle Name / Description</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="e.g. Master Bedroom Ceiling Light, Microwave Plug"
+                      value={newRecData.name}
+                      onChange={(e) => setNewRecData(prev => ({ ...prev, name: e.target.value }))}
+                      className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Device Type</label>
+                      <select 
+                        value={newRecData.type}
+                        onChange={(e) => setNewRecData(prev => ({ ...prev, type: e.target.value }))}
+                        className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white"
+                      >
+                        {DEVICE_TYPES.map(type => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Room / Area</label>
+                      <select 
+                        value={newRecData.room}
+                        onChange={(e) => setNewRecData(prev => ({ ...prev, room: e.target.value }))}
+                        className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white"
+                      >
+                        {roomOptions.map(room => (
+                          <option key={room} value={room}>{room}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Specific Location Notes</label>
+                    <textarea 
+                      rows={3}
+                      placeholder="e.g. On the west wall, located behind the nightstand"
+                      value={newRecData.notes}
+                      onChange={(e) => setNewRecData(prev => ({ ...prev, notes: e.target.value }))}
+                      className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white resize-none"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button 
+                      type="button"
+                      onClick={() => setShowRecModal(false)}
+                      className="px-4 py-2 text-xs font-bold flat-btn-secondary rounded-xl"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit"
+                      className="px-4 py-2 text-xs font-bold flat-btn-primary rounded-xl"
+                    >
+                      Save Mapping
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* CIRCUIT EDIT MODAL */}
+          {showCircuitModal && editingCircuit && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}>
+              <div className="flat-modal w-full max-w-md p-6 relative text-white animate-fade-in">
+                <h4 className="text-lg font-black mb-1 text-white">
+                  Edit Breaker Space {editingCircuit.num} Properties
+                </h4>
+                <p className="text-xs flat-text-muted mb-4">
+                  Update circuit identifier and properties as marked on panel box labels.
+                </p>
+
+                <form onSubmit={handleSaveCircuit} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Breaker Label</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="e.g. FSBED, AC SYSTEM"
+                      value={editingCircuit.label}
+                      onChange={(e) => setEditingCircuit(prev => ({ ...prev, label: e.target.value }))}
+                      className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white font-mono"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Amperage Rating (Amps)</label>
+                      <select 
+                        value={editingCircuit.amps}
+                        onChange={(e) => setEditingCircuit(prev => ({ ...prev, amps: parseInt(e.target.value) }))}
+                        className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white"
+                      >
+                        <option value={15}>15 Amps</option>
+                        <option value={20}>20 Amps</option>
+                        <option value={25}>25 Amps</option>
+                        <option value={30}>30 Amps</option>
+                        <option value={40}>40 Amps</option>
+                        <option value={50}>50 Amps</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Breaker Type / Spec</label>
+                      <select 
+                        value={editingCircuit.type}
+                        onChange={(e) => setEditingCircuit(prev => ({ ...prev, type: e.target.value }))}
+                        className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white"
+                      >
+                        <option value="Standard">Standard Breaker</option>
+                        <option value="AFCI">AFCI Protected</option>
+                        <option value="GFCI">GFCI Protected</option>
+                        <option value="Double-Pole">Double-Pole (240V)</option>
+                        <option value="Double-Pole-Solar">Double-Pole Solar Feed</option>
+                        <option value="Blank">Blank Cover</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold flat-text-muted uppercase mb-1">Coverage Scope Notes</label>
+                    <textarea 
+                      rows={3}
+                      value={editingCircuit.notes}
+                      onChange={(e) => setEditingCircuit(prev => ({ ...prev, notes: e.target.value }))}
+                      className="w-full flat-input rounded-xl px-3 py-2 text-sm text-white resize-none"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2 pt-2">
+                    <button 
+                      type="button"
+                      onClick={() => setShowCircuitModal(false)}
+                      className="px-4 py-2 text-xs font-bold flat-btn-secondary rounded-xl"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      type="submit"
+                      className="px-4 py-2 text-xs font-bold flat-btn-primary rounded-xl"
+                    >
+                      Update Properties
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* ROOM MANAGEMENT MODAL */}
+          {showRoomModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}>
+              <div className="flat-modal w-full max-w-md p-6 relative text-white animate-fade-in">
+                <h4 className="text-lg font-black mb-1 text-white">Manage Room / Area Options</h4>
+                <p className="text-xs flat-text-muted mb-4">
+                  Add, rename, or delete room names in the system. Renaming a room will automatically update all mapped receptacles.
+                </p>
+
+                {/* Add new room inline form */}
+                <div className="flex gap-2 mb-4 pb-4 border-b border-[#2c3e50]">
+                  <input 
+                    type="text" 
+                    placeholder="New Room Name (e.g. Pantry, Attic)" 
+                    id="new-room-input"
+                    className="flex-1 flat-input rounded-xl px-3 py-2 text-sm text-white"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        handleAddRoom(e.target.value);
+                        e.target.value = '';
+                      }
+                    }}
+                  />
+                  <button 
+                    onClick={() => {
+                      const input = document.getElementById('new-room-input');
+                      handleAddRoom(input.value);
+                      input.value = '';
+                    }}
+                    className="px-4 py-2 text-xs font-bold flat-btn-primary rounded-xl"
+                  >
+                    Add
+                  </button>
+                </div>
+
+                {/* Rooms scrollable list */}
+                <div className="space-y-2 max-h-[250px] overflow-y-auto pr-2 mb-4">
+                  {roomOptions.map(room => (
+                    <div key={room} className="flex items-center justify-between bg-[#2c3e50] p-2 rounded-lg border border-[#34495e]">
+                      <span className="text-sm font-medium">{room}</span>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => {
+                            const newName = prompt(`Rename "${room}" to:`, room);
+                            if (newName) handleRenameRoom(room, newName);
+                          }}
+                          className="text-xs px-2 py-1 flat-breaker rounded hover:bg-[#34495e] border border-[#7f8c8d] text-slate-300"
+                        >
+                          Rename
+                        </button>
+                        <button 
+                          onClick={() => {
+                            if (confirm(`Are you sure you want to remove "${room}"? Receptacles currently mapped to this room will retain their label but their category dropdown list will update.`)) {
+                              handleDeleteRoom(room);
+                            }
+                          }}
+                          className="text-xs px-2 py-1 bg-red-600/20 text-red-400 border border-red-500/30 rounded hover:bg-red-600/30"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-end">
+                  <button 
+                    onClick={() => setShowRoomModal(false)}
+                    className="px-4 py-2 text-xs font-bold flat-btn-secondary rounded-xl"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Styled Physical Print CSS Overrides */}
+          <style>{`
+            @media print {
+              body * {
+                visibility: hidden;
+              }
+              #printable-panel-card, #printable-panel-card * {
+                visibility: visible;
+              }
+              #printable-panel-card {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: 2px solid black !important;
+                box-shadow: none !important;
+              }
+            }
+          `}</style>
+
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
